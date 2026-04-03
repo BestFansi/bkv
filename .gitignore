@@ -1,0 +1,15 @@
+# 编译生成的可执行文件和底层文件
+*.exe
+*.obj
+*.pdb
+*.ilk
+
+# Visual Studio 缓存和工程配置文件
+.vscode/
+x64/
+*.slnx
+*.vcxproj
+*.vcxproj.*
+
+*.md
+*.pdf
