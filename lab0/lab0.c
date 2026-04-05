@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include "op.h"
 /*
 Алгоритм Эратосфена.
 
@@ -24,20 +24,18 @@
 */
 int main(){
     //step 1
-    int i, a, n;
+    int i, n;
     printf("n = ");
     scanf("%d", &n);
-    int l = n-1; // l = length of array, n =
-    int* P = (int*)malloc(sizeof(int) * (n-1));
-    if (P == NULL) {
-        printf("Ошибка выделения памяти\n");
-        return 1;
+    while (n < 2) {
+        printf("Error! n should be >= 2.\n");
+        printf("n = ");
+        scanf("%d", &n);
     }
-    //assignment
-    for (i = 0; i < l; i++) {
-        P[i] = i + 2;
-    }
+    int l = n-1; // l = length of array, n = the last number of array
+    int* P = step1(n, l);
 
+    //output array
     printf("Array: {");
     for (i = 0; i < l-1; i++) {
         printf("%d, ", P[i]);
@@ -48,66 +46,24 @@ int main(){
 
     //step2
     int p = 2;
-
-    printf("\n*check*\n");
-    //algorithm 1
-    //step 5
-    while (p < n) {
-        //step 3
-        for (i = 0; i < l; i++) {
-            if (P[i] % p == 0 && P[i] >= 2*p && P[i] <= n) {
-                P[i] = 0;
-            }
-        }
-        //step 4
-        for (i = 0; i < l; i++) {
-            if (P[i] != 0 && P[i] > p) {
-                p = P[i];
-                printf("p = %d, ", p);
-                break;
-            }
-        }
-        //update the value of the last number n in the array
-        for (i = l-1; i > 0; i--) {
-            if (P[i] != 0) {
-                n = P[i];
-                printf("n = %d\n", n);
-                break;
-            }
-        }
-        
-        printf("{");
-        for (i = 0; i < l-1; i++) {
-            printf("%d, ", P[i]);
-        } 
-        i = l-1;
-        printf("%d}", P[i]);
-        printf("\n");
+ 
+    //step 3, 4, 5 & better algorithm
+    //The only differences between Algo1 and Algo2 are step 3 and the condition for ending the loop (p > n and p*p > n)
+    printf("select algorithm: (1 -- default, 2 -- better)\n");
+    int s = 0;
+    scanf("%d", &s);
+    if (1 == s) {
+        P = algorithm_1(P, p, n, l);
     }
-    printf("*check*\n\n");
-
-    //step 7
-    int count = 0;
-    for (int i = 0; i < l; i++) { 
-        if (P[i] != 0) {
-            P[count] = P[i];
-            count++;
-        }
-    }  
-    P = (int *)realloc(P, count * sizeof(int));
-    if (P == NULL) {
-        printf("Ошибка перераспределения памяти\n");
-        return 1;
+    else if (2 == s) {
+        P = algorithm_2(P, p, n, l);
     }
 
-    //output
-    printf("Prime numbers: {");
-    for (i = 0; i < count-1; i++) {
-        printf("%d, ", P[i]);
-    } 
-    i = count-1;
-    printf("%d}", P[i]);
-    printf("\n");
+    //step 7 &output
+    P = step7(P, l);
+
+    free(P);
+    P = NULL;
 
     return 0;
 }
