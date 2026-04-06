@@ -23,7 +23,6 @@
 Должны вычисляться простые числа и сохраняться в массиве int P[n];
 */
 int main(){
-    //step 1
     int i, n;
     printf("n = ");
     scanf("%d", &n);
@@ -32,35 +31,30 @@ int main(){
         printf("n = ");
         scanf("%d", &n);
     }
-    int l = n-1; // l = length of array, n = the last number of array
-    int* P = step1(n, l);
-
+    //step 1
+    int* P = step1(n);
     //output array
     printf("Array: {");
-    for (i = 0; i < l-1; i++) {
+    for (i = 0; i < n-2; i++) {
         printf("%d, ", P[i]);
     } 
-    i = l-1;
-    printf("%d}", P[i]);
-    printf("\n");
-
+    i = n-2;
+    printf("%d}\n", P[i]);
     //step2
     int p = 2;
- 
     //step 3, 4, 5 & better algorithm
     //The only differences between Algo1 and Algo2 are step 3 and the condition for ending the loop (p > n and p*p > n)
     printf("select algorithm: (1 -- default, 2 -- better)\n");
     int s = 0;
     scanf("%d", &s);
     if (1 == s) {
-        P = algorithm_1(P, p, n, l);
+        P = algorithm_1(P, p, n);
     }
     else if (2 == s) {
-        P = algorithm_2(P, p, n, l);
+        P = algorithm_2(P, p, n);
     }
-
     //step 7 &output
-    P = step7(P, l);
+    P = step7(P, n);
 
     free(P);
     P = NULL;
